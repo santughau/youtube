@@ -9,8 +9,10 @@ import { YoutubeVideoPlayer } from "@ionic-native/youtube-video-player/ngx";
   styleUrls: ["./list.page.scss"],
 })
 export class ListPage implements OnInit {
-  datas: [];
+  datas = [] as any;
   palyList;
+  nextPageToken: any;
+  id;
   constructor(
     private service: YoutubeServiceService,
     private router: Router,
@@ -20,9 +22,11 @@ export class ListPage implements OnInit {
 
   ngOnInit() {
     const id = this._route.snapshot.paramMap.get("id");
+    this.id = id;
 
     this.service.playlistList(id).subscribe((res) => {
       this.datas = res["items"];
+      this.nextPageToken = res["nextPageToken"];
     });
     this.service.presentLoading();
     this.service.playlist(id).subscribe((playListDetails) => {
@@ -33,5 +37,25 @@ export class ListPage implements OnInit {
   goToListPAge(id) {
     console.log(id);
     this.youtube.openVideo(id);
+  }
+
+  infiniteScrool(ev) {
+    if (this.nextPageToken) {
+      this.service
+        .GetFullplaylistList(this.id, this.nextPageToken)
+        .subscribe((res) => {
+          for (let i of res["items"]) {
+            this.datas.push(i);
+          }
+          if (!res["nextPageToken"]) {
+            this.nextPageToken = null;
+          } else {
+            this.nextPageToken = res["nextPageToken"];
+          }
+          ev.target.complete();
+        });
+    } else {
+      ev.target.disabled = true;
+    }
   }
 }

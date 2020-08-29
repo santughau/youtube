@@ -7,7 +7,7 @@ import { LoadingController } from "@ionic/angular";
   providedIn: "root",
 })
 export class YoutubeServiceService {
-  channelId = "UCC4p2ZX4hSkYHv5KPwWbMYg";
+  channelId = "UCuT0rj__qEq_ZO3kYwun4Qg";
   api = "AIzaSyDLJoFpXVc-d-s3LATRMKvwCOj0hp_s0gk";
 
   constructor(
@@ -73,6 +73,28 @@ export class YoutubeServiceService {
     return this.http.get(
       "https://www.googleapis.com/youtube/v3/activities?part=contentDetails%2Csnippet&channelId=" +
         this.channelId +
+        "&key=" +
+        this.api +
+        "&maxResults=50&pageToken=" +
+        pageToken
+    );
+  }
+
+  GetFullplaylist(pageToken) {
+    return this.http.get(
+      "https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" +
+        this.channelId +
+        "&key=" +
+        this.api +
+        "&maxResults=50&pageToken=" +
+        pageToken
+    );
+  }
+
+  GetFullplaylistList(playlistId, pageToken) {
+    return this.http.get(
+      "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=" +
+        playlistId +
         "&key=" +
         this.api +
         "&maxResults=50&pageToken=" +

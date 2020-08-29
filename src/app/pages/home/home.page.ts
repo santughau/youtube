@@ -8,8 +8,9 @@ import { Router } from "@angular/router";
   styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
-  data: [];
+  data = [] as any;
   channel: {};
+  nextPageToken: any;
   constructor(private service: YoutubeServiceService, private router: Router) {}
 
   ngOnInit() {
@@ -19,10 +20,29 @@ export class HomePage implements OnInit {
     this.service.presentLoading();
     this.service.playlist().subscribe((res) => {
       this.data = res["items"];
+      this.nextPageToken = res["nextPageToken"];
       this.service.loadingController.dismiss();
     });
   }
   goToListPAge(id) {
     this.router.navigate(["/list", id]);
+  }
+
+  infiniteScrool(ev) {
+    if (this.nextPageToken) {
+      this.service.GetFullplaylist(this.nextPageToken).subscribe((res) => {
+        for (let i of res["items"]) {
+          this.data.push(i);
+        }
+        if (!res["nextPageToken"]) {
+          this.nextPageToken = null;
+        } else {
+          this.nextPageToken = res["nextPageToken"];
+        }
+        ev.target.complete();
+      });
+    } else {
+      ev.target.disabled = true;
+    }
   }
 }

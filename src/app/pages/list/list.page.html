@@ -21,4 +21,7 @@
       <p>अपलोड दिनांक : {{item.snippet.publishedAt | date}}</p>
     </ion-label>
   </ion-item>
+  <ion-infinite-scroll (ionInfinite)="infiniteScrool($event)">
+    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
