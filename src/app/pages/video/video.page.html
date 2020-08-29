@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>All Videos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item
+    *ngFor="let item of list; let i=index"
+    (click)="goToListPAge(item.contentDetails.upload.videoId)"
+  >
+    <ion-thumbnail slot="start">
+      <img src="{{item.snippet.thumbnails.default.url}}" style="height: 100%" />
+    </ion-thumbnail>
+    <ion-label>
+      <h2>{{item.snippet.title}}</h2>
+      <h3>विडिओ क्रमांक : {{i+1}}</h3>
+      <p>अपलोड दिनांक : {{item.snippet.publishedAt | date}}</p>
+    </ion-label>
+  </ion-item>
+  <ion-infinite-scroll (ionInfinite)="infiniteScrool($event)">
+    <ion-infinite-scroll-content> </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

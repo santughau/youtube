@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{channel?.items[0].snippet.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let item of data" (click)="goToListPAge(item.id)">
+    <ion-thumbnail slot="start">
+      <img src="{{item.snippet.thumbnails.default.url}}" style="height: 100%" />
+    </ion-thumbnail>
+    <ion-label>{{item.snippet.title}}</ion-label>
+  </ion-item>
+</ion-content>
